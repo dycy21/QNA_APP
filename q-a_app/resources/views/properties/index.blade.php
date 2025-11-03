@@ -12,7 +12,7 @@
                 <th>Name</th>
                 <th>Address</th>
                 <th>Created At</th>
-            </tr>
+                <th>Actions</th> </tr>
         </thead>
         <tbody>
             @forelse ($properties as $property)
@@ -20,23 +20,21 @@
                     <td>{{ $property->name }}</td>
                     <td>{{ $property->address ?? 'N/A' }}</td>
                     <td>{{ $property->created_at->format('Y-m-d') }}</td>
-                </tr>
+                    
+                    <td>
+                        @if ($property->question)
+                            <a href="{{ route('questions.show', $property->question) }}" class="btn" style="padding: 5px 10px; background-color: #38c172;">Manage Q&A</a>
+                        @else
+                            <a href="{{ route('properties.questions.create', $property) }}" class="btn" style="padding: 5px 10px; background-color: #ffc107;">Add Question</a>
+                        @endif
+                    </td>
+                    </tr>
             @empty
                 <tr>
-                    <td colspan="3">No properties found.</td>
-                </tr>
+                    <td colspan="4">No properties found.</td> </tr>
             @endforelse
         </tbody>
-    </table>
-    <tr>
-    <td>
-        @if ($property->question)
-            <a href="{{ route('questions.show', $property->question) }}" class="btn" style="padding: 5px 10px; background-color: #38c172;">Manage Q&A</a>
-        @else
-            <a href="{{ route('properties.questions.create', $property) }}" class="btn" style="padding: 5px 10px; background-color: #ffc107;">Add Question</a>
-        @endif
-    </td>
-    </tr>
+        </table>
     
     <hr>
     <h3><a href="{{ route('guests.index') }}">Go to Guest Bookings</a></h3>
