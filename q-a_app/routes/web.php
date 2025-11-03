@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\GuestController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,3 +61,7 @@ Route::get('/', function () {
     return view('welcome'); // Load the new welcome view
 
 });
+Route::get('/', function () {
+    return redirect()->route('admin.dashboard');
+});
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
