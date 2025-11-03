@@ -55,4 +55,8 @@ Route::resource('properties.questions', App\Http\Controllers\QuestionController:
 Route::resource('questions.answers', App\Http\Controllers\AnswerController::class)
     ->shallow(); 
     
+// Optional Homepage (CHANGED to load a welcome view)
+Route::get('/', function () {
+    return view('welcome'); // Load the new welcome view
 
+});

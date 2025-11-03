@@ -12,10 +12,22 @@ class GuestController extends Controller
 {
     // --- Admin CRUD Methods ---
 
-    public function index()
+    public function index(Request $request)
     {
-        $guests = Guest::with('property')->latest()->get();
-        return view('guests.index', compact('guests'));
+        $search = $request->input('search');
+
+        $guests = Guest::with('property')
+            ->when($search, function ($query, $search) {
+                // Apply search filter if a query exists
+                $query->where('name', 'like', '%' . $search . '%')
+                      ->orWhere('email', 'like', '%' . $search . '%')
+                      ->orWhere('phone', 'like', '%' . $search . '%');
+            })
+            ->latest()
+            ->get();
+
+        // Pass both guests and the original search term back to the view
+        return view('guests.index', compact('guests', 'search'));
     }
 
     public function create()

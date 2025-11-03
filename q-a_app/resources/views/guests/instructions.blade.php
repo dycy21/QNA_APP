@@ -3,30 +3,38 @@
 @section('header_title', 'Your Check-in Instructions')
 
 @section('content')
-    <h2 style="color: #3490dc;">{{ $instructionPage->title }}</h2>
-    <p style="font-style: italic;">Welcome, {{ $guest->name }}! Please follow these steps to complete your check-in for {{ $guest->property->name }}.</p>
+    <h2 class="text-success mb-4">{{ $instructionPage->title }}</h2>
+    <p class="lead text-muted">Welcome, {{ $guest->name }}! Please follow these steps to complete your check-in for {{ $guest->property->name }}.</p>
     
     @if ($instructionPage->description)
         <p>{{ $instructionPage->description }}</p>
     @endif
 
-    <hr>
+    <hr class="my-4">
     
     @forelse ($instructionPage->steps as $step)
-        <div style="border: 1px solid #ccc; padding: 20px; margin-bottom: 25px; border-radius: 5px; background-color: #f9f9f9;">
-            <h3 style="color: #38c172;">STEP {{ $step->order }}: {{ $step->heading }}</h3>
-            
-            @if ($step->image_url)
-                <div style="margin: 15px 0; text-align: center;">
-                    <img src="{{ $step->image_url }}" alt="Step {{ $step->order }} Image" style="max-width: 100%; height: auto; border: 3px solid #ddd; border-radius: 4px;">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h3 class="h5 mb-0 text-success">STEP {{ $step->order }}: {{ $step->heading }}</h3>
+            </div>
+            <div class="card-body row">
+                
+                <div class="col-md-8">
+                    <p class="card-text">{!! nl2br(e($step->content)) !!}</p>
                 </div>
-            @endif
 
-            <p>{!! nl2br(e($step->content)) !!}</p>
+                @if ($step->image_url)
+                    <div class="col-md-4 text-center">
+                        <img src="{{ $step->image_url }}" alt="Step {{ $step->order }} Image" class="img-fluid rounded border shadow-sm" style="max-height: 250px; object-fit: cover;">
+                    </div>
+                @endif
+            </div>
         </div>
     @empty
-        <p style="color: red; font-weight: bold;">No instructions found for this scenario. Please contact support.</p>
+        <div class="alert alert-danger">
+            <p class="fw-bold mb-0">No instructions found for this scenario. Please contact support.</p>
+        </div>
     @endforelse
     
-    <p style="text-align: center; margin-top: 30px;">Thank you for checking in!</p>
+    <p class="text-center mt-5 fs-5">Thank you for checking in!</p>
 @endsection
