@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Guest Check-in</title>
     <style>
+        /* Custom Class for Gradient Headlines */
         .glossy-btn {
         /* ... (other button styles like padding, background, etc.) ... */
            text-decoration: none; 

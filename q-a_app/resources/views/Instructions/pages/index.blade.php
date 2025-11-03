@@ -4,7 +4,7 @@
 
 @section('content')
     <h2>Instruction Pages List</h2>
-    <p><a href="{{ route('instruction-pages.create') }}" class="btn">Create New Page</a></p>
+    <p><a href="{{ route('instruction-pages.create') }}" class="glossy-btn success">Create New Page</a></p>
 
     <table>
         <thead>
@@ -20,7 +20,7 @@
                     <td>{{ $page->title }}</td>
                     <td>{{ Str::limit($page->description, 50) ?? 'N/A' }}</td>
                     <td>
-                        <a href="{{ route('instruction-pages.show', $page) }}" class="btn" style="padding: 5px 10px; background-color: #ffc107;">View Steps</a>
+                        <a href="{{ route('instruction-pages.show', $page) }}"  class="glossy-btn primary" style="padding: 5px 10px; background-color: #ae9fb8ff;">View Steps</a>
                     </td>
                 </tr>
             @empty
@@ -32,7 +32,7 @@
     </table>
     <hr>
     <p>Admin Navigation: 
-        <a href="{{ route('properties.index') }}">Properties</a> | 
-        <a href="{{ route('guests.index') }}">Guests</a>
+        <a href="{{ route('properties.index') }}" class="glossy-btn primary">Properties</a> | 
+        <a href="{{ route('guests.index') }}" class="glossy-btn success">Guests</a>
     </p>
 @endsection

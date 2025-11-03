@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('header_title', 'Admin Overview')
+@section('header_title', 'Dashboard')
 
 @section('content')
     <h2>System Overview and Quick Access</h2>
@@ -29,11 +29,11 @@
                         .glossy-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4); }
                     </style>
 
-                    <h4 style="color: yellow; margin-bottom: 10px;">{{ $property->name }}</h4>
-                    <p style="opacity: 0.8; font-size: 0.9em;">{{ $property->address ?? 'Address not specified.' }}</p>
+                    <h4 style="color: #083b6bff; margin-bottom: 10px;">{{ $property->name }}</h4>
+                    <p style="opacity: 0.8; font-size: 0.9em; color: rgba(4, 46, 48, 1)">{{ $property->address ?? 'Address not specified.' }}</p>
 
                     <p style="margin-top: 15px;">
-                        <strong style="color: {{ $property->question ? '#38c172' : '#ffc107' }};">
+                        <strong style="color: {{ $property->question ? '#086b5eff' : '#be2d45ff' }};">
                             Status: {{ $property->question ? 'Q&A Active' : 'Q&A Missing' }}
                         </strong>
                     </p>

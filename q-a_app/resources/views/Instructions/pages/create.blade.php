@@ -14,7 +14,7 @@
             <label for="description">Page Introduction/Description:</label>
             <textarea name="description" id="description" rows="3">{{ old('description') }}</textarea>
         </div>
-        <button type="submit" class="btn btn-success">Save Page</button>
-        <a href="{{ route('instruction-pages.index') }}" class="btn" style="background-color: #6c757d;">Cancel</a>
+        <button type="submit" class="glossy-btn success">Save Page</button>
+        <a href="{{ route('instruction-pages.index') }}"  class="glossy-btn primary" style="background-color: #6c757d;">Cancel</a>
     </form>
 @endsection

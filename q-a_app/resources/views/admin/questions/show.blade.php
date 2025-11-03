@@ -4,13 +4,13 @@
 
 @section('content')
     <h2>Check-in Question for {{ $property->name }}:</h2>
-    <h3 style="color: #3490dc;">{{ $question->text }}</h3>
+    <h3 style="color: #086b5eff">{{ $question->text }}</h3>
     
     <hr>
     
     <h3>Linked Answers</h3>
     <p>
-        <a href="{{ route('questions.answers.create', $question) }}" class="btn btn-success">➕ Add New Answer Option</a>
+        <a href="{{ route('questions.answers.create', $question) }}"  class="glossy-btn primary">➕ Add New Answer Option</a>
     </p>
 
     <table>
@@ -43,5 +43,5 @@
     </table>
 
     <hr>
-    <a href="{{ route('properties.index') }}" class="btn" style="background-color: #6c757d;">Back to Properties</a>
+    <a href="{{ route('properties.index') }}"  class="glossy-btn success" style="background-color: #6c757d;">Back to Properties</a>
 @endsection
