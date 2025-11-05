@@ -16,7 +16,7 @@
                 <textarea name="address" id="address">{{ old('address') }}</textarea>
             </div>
             <button type="submit" class="glossy-btn success">Save Property</button>
-            <a href="{{ route('properties.index') }}" class="glossy-btn">Cancel</a>
+            <a href="{{ route('properties.index') }}" class="glossy-btn primary">Cancel</a>
         </form>
     </div>
 @endsection

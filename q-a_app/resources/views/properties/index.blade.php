@@ -6,10 +6,7 @@
     <div class="glossy-card">
         <h2>Property List</h2>
         
-        {{-- 🛑 Only Admins can create new properties 🛑 --}}
-        @if (Auth::user()->role === 'admin')
-            <p><a href="{{ route('properties.create') }}" class="glossy-btn success">Add New Property</a></p>
-        @endif
+        <p><a href="{{ route('properties.create') }}" class="glossy-btn success">Add New Property</a></p>
 
         <table>
             <thead>
@@ -17,10 +14,7 @@
                     <th>Name</th>
                     <th>Address</th>
                     <th>Q&A Setup</th>
-                    {{-- Only show Delete column if user is an admin --}}
-                    @if (Auth::user()->role === 'admin')
-                        <th>Delete</th> 
-                    @endif
+                    <th>Delete</th> 
                 </tr>
             </thead>
             <tbody>
@@ -37,25 +31,30 @@
                             @endif
                         </td>
 
-                        {{-- 🛑 Only show Delete button if user is an admin 🛑 --}}
-                        @if (Auth::user()->role === 'admin')
-                            <td>
-                                <form action="{{ route('properties.destroy', $property) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this property?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="glossy-btn" style="background: rgba(255, 0, 0, 0.7); padding: 5px 10px;">Delete</button>
-                                </form>
-                            </td>
-                        @endif
+                        <td>
+                            <form action="{{ route('properties.destroy', $property) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this property?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="glossy-btn" style="background: rgba(255, 0, 0, 0.7); padding: 5px 10px;">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="{{ Auth::user()->role === 'admin' ? '4' : '3' }}">No properties found.</td>
+                        <td colspan="4">No properties found</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
-    </div>
+        
+        <div style="margin-top: 20px; text-align: center;">
+            {{ $properties->links('pagination::simple-bootstrap-4') }}
+            <p style="opacity: 0.7; font-size: 0.9em; margin-top: 10px;">
+                Showing {{ $properties->firstItem() }} to {{ $properties->lastItem() }} of {{ $properties->total() }} properties
+            </p>
+        </div>
+        
+    </div> 
     
     <hr style="border-top: 1px solid rgba(255, 255, 255, 0.5);">
     <h3><a href="/dashboard" class="glossy-btn primary">Back to Dashboard</a></h3>

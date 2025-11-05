@@ -8,20 +8,28 @@ use Illuminate\Support\Facades\Auth;
 
 class PropertyController extends Controller
 {
-    // Display a listing of the resource.
+    /**
+     * Display a listing of the resource (GET /properties) with pagination.
+     */
     public function index()
     {
-        $properties = Property::all();
+        // 🛑 CRITICAL CHANGE: Use paginate() instead of all()
+        $properties = Property::latest()->paginate(10); 
+        
         return view('properties.index', compact('properties'));
     }
 
-    // Show the form for creating a new resource.
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
         return view('properties.create');
     }
 
-    // Store a newly created resource in storage.
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -35,7 +43,9 @@ class PropertyController extends Controller
                          ->with('success', 'Property created successfully.');
     }
 
-    // DESTROY (Delete) - Reverted: Any authenticated user can delete
+    /**
+     * Remove the specified resource from storage (DELETE /properties/{property}).
+     */
     public function destroy(Property $property)
     {
         $property->delete();
