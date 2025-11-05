@@ -29,7 +29,13 @@
             <tbody>
                 @forelse ($guests as $guest)
                     <tr>
-                        <td>{{ $guest->name }}<br><small style="color: rgba(255, 255, 255, 0.8);">{{ $guest->email }} | {{ $guest->phone }}</small></td>
+                        <td>
+                            <a href="{{ route('guests.show', $guest) }}" style="color: yellow; font-weight: bold; text-decoration: none;">
+                                {{ $guest->name }}
+                            </a>
+                            <br>
+                            <small style="color: rgba(255, 255, 255, 0.8);">{{ $guest->email }} | {{ $guest->phone }}</small>
+                        </td>
                         <td>{{ $guest->property->name }}</td>
                         <td>{{ $guest->check_in_date->format('M j') }} - {{ $guest->check_out_date->format('M j') }}</td>
                         <td>
@@ -54,8 +60,16 @@
                 @endforelse
             </tbody>
         </table>
+        
+        <div style="margin-top: 20px; text-align: center;">
+            {{ $guests->links('pagination::simple-bootstrap-4') }}
+            <p style="opacity: 0.7; font-size: 0.9em; margin-top: 10px;">
+                Showing {{ $guests->firstItem() }} to {{ $guests->lastItem() }} of {{ $guests->total() }} guests.
+            </p>
+        </div>
+        
     </div>
 
     <hr style="border-top: 1px solid rgba(255, 255, 255, 0.5);">
-    <h3><a href="{{ route('properties.index') }}" class="glossy-btn primary">Go to Property Setup</a></h3>
+    <h3><a href="/dashboard" class="glossy-btn primary">Go to Property Setup</a></h3>
 @endsection

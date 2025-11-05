@@ -177,6 +177,28 @@
 
         /* Optional: Cleanup for layout */
         .min-h-screen { min-height: 100vh; }
+        /* 8. Instruction Step Specific Styles */
+    .step-content-wrapper {
+        display: flex; !important;
+        gap: 20px; /* Space between image and text */
+        align-items: flex-start; /* Aligns content to the top */
+    }
+    .step-text {
+        flex-grow: 1; /* Allows instruction text to fill the remaining space */
+        min-width: 50%;
+    }
+    .step-image {
+        max-width: 40%;
+        flex-shrink: 0; /* Prevents the image container from shrinking */
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .step-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
     </style>
 </head>
 <body class="font-sans antialiased">

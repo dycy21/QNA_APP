@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Answer; // Add this line
+
 use App\Models\Guest;
 use App\Models\Property;
+use App\Models\Answer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage; // Ensure Storage is imported
 
 class GuestController extends Controller
 {
@@ -15,18 +17,17 @@ class GuestController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-
+        
         $guests = Guest::with('property')
             ->when($search, function ($query, $search) {
-                // Apply search filter if a query exists
                 $query->where('name', 'like', '%' . $search . '%')
                       ->orWhere('email', 'like', '%' . $search . '%')
                       ->orWhere('phone', 'like', '%' . $search . '%');
             })
             ->latest()
-            ->get();
-
-        // Pass both guests and the original search term back to the view
+            ->paginate(10)
+            ->withQueryString();
+            
         return view('guests.index', compact('guests', 'search'));
     }
 
@@ -55,18 +56,48 @@ class GuestController extends Controller
                          ->with('success', 'Guest booking created. Magic link available below.');
     }
     
+    /**
+     * Display the specified guest's details (GET /guests/{guest}).
+     */
+    public function show(Guest $guest)
+    {
+        // Eager load related data: property, ID photo record, and the final answer page
+        $guest->load(['property', 'idPhoto', 'answer.instructionPage']);
+
+        return view('guests.show', compact('guest'));
+    }
+    
     // --- Guest Facing Methods ---
 
+    public function showCheckIn($token)
+    {
+        // ... (Guest check-in logic remains unchanged) ...
+        $guest = Guest::where('magic_link_token', $token)->firstOrFail();
+    
+        $today = Carbon::today();
+        $checkInDate = Carbon::parse($guest->check_in_date);
+        $isCheckInDayOrPast = $today->greaterThanOrEqualTo($checkInDate);
+        
+        if ($guest->answer_id) { 
+            $instructionPage = $guest->answer->instructionPage; 
+            return view('guests.instructions', compact('guest', 'instructionPage'));
+        }
+        
+        $question = $guest->property->question;
 
-    /**
-     * Handles the guest updating their info and uploading their ID.
-     */
+        return view('guests.check_in', compact(
+            'guest', 
+            'isCheckInDayOrPast', 
+            'question'
+        ));
+    }
+
     public function updateCheckIn(Request $request, Guest $guest)
     {
         $validated = $request->validate([
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:20',
-            'id_photo' => 'nullable|image|max:5000', // 5MB max
+            'id_photo' => 'nullable|image|max:5000',
         ]);
 
         $guest->update([
@@ -76,10 +107,7 @@ class GuestController extends Controller
         ]);
 
         if ($request->hasFile('id_photo')) {
-            // Store the file in 'storage/app/public/ids'
             $path = $request->file('id_photo')->store('ids', 'public');
-            
-            // Create a record for the ID Photo
             $guest->idPhoto()->create(['file_path' => $path]);
         }
 
@@ -87,55 +115,20 @@ class GuestController extends Controller
                          ->with('status', 'Your details have been updated and ID uploaded successfully!');
     }
     
-    
-    // The `processAnswer` method will be implemented in the next step when we add Questions/Answers.
-    public function showCheckIn($token)
-    {
-        $guest = Guest::where('magic_link_token', $token)->firstOrFail();
-        
-        $today = Carbon::today();
-        $checkInDate = Carbon::parse($guest->check_in_date);
-
-        
-        $isCheckInDayOrPast = $today->greaterThanOrEqualTo($checkInDate);
-
-        // Check if the guest has already answwered and has a linked instruction page
-        if ($guest->answered_answer_id) {
-            $instructionPage = $guest->answeredAnswer->instructionPage;
-            return view('guests.instruction_page', compact('guest', 'instructionPage'));
-            
-        }
-        // load the property's question and answers for the form
-        $question = $guest->property->question;
-
-        return view('guests.check_in', compact(
-            'guest', 
-            'isCheckInDayOrPast', 
-            'today', 
-            'checkInDate',
-            'question'
-        ));
-    }
     public function processAnswer(Request $request, Guest $guest)
     {
         $validated = $request->validate([
             'answer_id' => 'required|exists:answers,id',
         ]);
-
+        
         $answer = Answer::findOrFail($validated['answer_id']);
 
-        // check if the selected answer belongs to the property's question
         if ($answer->question->property_id !== $guest->property_id) {
-            abort(403, 'Invalid answer selection for this property.');
+            abort(403, 'Invalid answer selection.');
         }
-        // Update the guest's answered_answer_id
-        $guest->update([
-            'answered_answer_id' => $answer->id,
-        ]);
-
-        // Redirect back to the check-in link, which will now take them to the instruction page
-        return redirect()->route('guest.checkin', $guest->magic_link_token);
-
         
+        $guest->update(['answer_id' => $validated['answer_id']]);
+
+        return redirect()->route('guest.checkin', $guest->magic_link_token);
     }
 }
