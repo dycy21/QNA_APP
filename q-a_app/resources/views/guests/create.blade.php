@@ -45,7 +45,7 @@
             <input type="date" name="check_out_date" id="check_out_date" required value="{{ old('check_out_date') }}">
         </div>
         
-        <button type="submit" class="btn btn-success">Create Booking</button>
-        <a href="{{ route('guests.index') }}" class="btn" style="background-color: #6c757d;">Cancel</a>
+        <button type="submit" class="glossy-btn success">Create Booking</button>
+        <a href="{{ route('guests.index') }}" class="glossy-btn primary" >Cancel</a>
     </form>
 @endsection

@@ -13,7 +13,7 @@
             <input type="text" name="text" id="text" required value="{{ old('text') }}" placeholder="e.g., 'Are you traveling by car?'">
         </div>
         
-        <button type="submit" class="btn btn-success">Save Question & Add Answers</button>
-        <a href="{{ route('properties.index') }}" class="btn" style="background-color: #6c757d;">Cancel</a>
+        <button type="submit" class="glossy-btn primary">Save Question & Add Answers</button>
+        <a href="{{ route('properties.index') }}" class="glossy-btn submit" style="background-color: #6c757d;">Cancel</a>
     </form>
 @endsection

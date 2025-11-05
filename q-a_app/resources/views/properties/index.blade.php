@@ -20,7 +20,13 @@
             <tbody>
                 @forelse ($properties as $property)
                     <tr>
-                        <td>{{ $property->name }}</td>
+                        {{-- 🛑 NAME IS NOW A LINK TO THE DETAIL PAGE 🛑 --}}
+                        <td>
+                            <a href="{{ route('properties.show', $property) }}" style="color: yellow; font-weight: bold; text-decoration: none;">
+                                {{ $property->name }}
+                            </a>
+                        </td>
+                        
                         <td>{{ $property->address ?? 'N/A' }}</td>
                         
                         <td>
@@ -41,7 +47,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4">No properties found</td>
+                        <td colspan="4">No properties found.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -50,7 +56,7 @@
         <div style="margin-top: 20px; text-align: center;">
             {{ $properties->links('pagination::simple-bootstrap-4') }}
             <p style="opacity: 0.7; font-size: 0.9em; margin-top: 10px;">
-                Showing {{ $properties->firstItem() }} to {{ $properties->lastItem() }} of {{ $properties->total() }} properties
+                Showing {{ $properties->firstItem() }} to {{ $properties->lastItem() }} of {{ $properties->total() }} properties.
             </p>
         </div>
         

@@ -1,47 +1,36 @@
 @extends('layouts.app')
 
-@section('header_title', 'Manage Q&A: ' . $property->name)
+@section('header_title', 'Property Details: ' . $property->name)
 
 @section('content')
-    <h2>Check-in Question for {{ $property->name }}:</h2>
-    <h3 style="color: #3490dc;">{{ $question->text }}</h3>
-    
-    <hr>
-    
-    <h3>Linked Answers</h3>
-    <p>
-        <a href="{{ route('questions.answers.create', $question) }}" class="btn btn-success">➕ Add New Answer Option</a>
-    </p>
+    <div class="glossy-card" style="padding: 30px;">
+        <h2 class="gradient-text" style="margin-bottom: 25px;">{{ $property->name }}</h2>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Answer Text</th>
-                <th>Redirects To Instruction Page</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($question->answers as $answer)
-                <tr>
-                    <td>{{ $answer->text }}</td>
-                    <td>
-                        @if ($answer->instructionPage)
-                            <a href="{{ route('instruction-pages.show', $answer->instructionPage) }}" style="color: #38c172; font-weight: bold;">
-                                {{ $answer->instructionPage->title }}
-                            </a>
-                        @else
-                            <span style="color: red;">ERROR: No Page Linked!</span>
-                        @endif
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="2">No answers defined yet. You must add at least two answers to give the guest a choice.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <p style="font-size: 1.1em; opacity: 0.9;">**Address:** {{ $property->address ?? 'Address not set.' }}</p>
 
-    <hr>
-    <a href="{{ route('properties.index') }}" class="btn" style="background-color: #6c757d;">Back to Properties</a>
+            {{-- EDIT BUTTON --}}
+            <a href="{{ route('properties.edit', $property) }}" class="glossy-btn primary" style="padding: 8px 20px;">
+                Edit Details
+            </a>
+        </div>
+        
+        <h3 style="border-bottom: 1px solid rgba(255, 255, 255, 0.5); padding-bottom: 5px; margin-top: 30px;">
+            Check-in Configuration
+        </h3>
+        
+        @if ($property->question)
+            <p><strong>Status:</strong> <span style="color: #38c172; font-weight: bold;">Q&A is Active</span></p>
+            <p><strong>Question:</strong> {{ $property->question->text }}</p>
+            <a href="{{ route('questions.show', $property->question) }}" class="glossy-btn success" style="padding: 5px 10px;">Manage Q&A Logic</a>
+        @else
+            <p><strong>Status:</strong> <span style="color: #ffc107; font-weight: bold;">Q&A Setup Pending</span></p>
+            <a href="{{ route('properties.questions.create', $property) }}" class="glossy-btn primary" style="padding: 5px 10px;">Setup Check-in Question</a>
+        @endif
+
+    </div>
+    
+    <div style="margin-top: 20px;">
+        <a href="{{ route('properties.index') }}" class="glossy-btn">← Back to Property List</a>
+    </div>
 @endsection

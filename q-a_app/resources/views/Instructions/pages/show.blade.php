@@ -30,5 +30,5 @@
     @endforelse
 
     <hr>
-    <a href="{{ route('instruction-pages.index') }}" class="btn" style="background-color: #6c757d;">Back to Pages</a>
+    <a href="{{ route('instruction-pages.index') }}" class="glossy-btn primary" >Back to Pages</a>
 @endsection
