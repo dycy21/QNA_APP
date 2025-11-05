@@ -1,67 +1,79 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+// --- Controller Imports ---
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InstructionPageController;
+use App\Http\Controllers\StepController;
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| The routes for your application. We'll start with basic admin CRUD.
-|
 */
 
-// --- Admin Section ---
+// --- PUBLIC ROUTES ---
 
-// Guests CRUD
-Route::resource('guests', 'GuestController'::class);
+// Public gateway page for Login/Register options
+Route::get('/auth-gateway', function () {
+    return view('auth_gateway');
+})->name('auth.gateway');
 
-// Instruction Pages CRUD
-Route::resource('instruction-pages', 'App\Http\Controllers\InstructionPageController'::class);
-
-// Nested Steps CRUD (Steps belong to an InstructionPage)
-Route::resource('instruction-pages.steps', 'App\Http\Controllers\StepController')
-    ->shallow(); // Use 'shallow' to keep step routes cleaner (e.g., /steps/{step})
-
-
-// Properties CRUD
-Route::resource('properties', PropertyController::class);
-
-// Guests CRUD
-Route::resource('guests', GuestController::class);
-
-// This is where the guest lands after clicking the link.
+// Guest Magic Link Flow (Must remain public for check-in)
 Route::get('check-in/{token}', [GuestController::class, 'showCheckIn'])->name('guest.checkin');
 Route::post('check-in/{guest}', [GuestController::class, 'updateCheckIn'])->name('guest.update');
 Route::post('check-in/{guest}/answer', [GuestController::class, 'processAnswer'])->name('guest.answer');
 
 
-// Optional Homepage (You can replace this later)
-Route::get('/', function () {
-    return redirect()->route('properties.index');
-});
+// --- MINIMAL AUTH ROUTES ---
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// routes/web.php
+// Registration routes
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('/register', [RegisteredUserController::class, 'store']);
 
-// ... (Existing admin routes for Properties, Guests, Instruction Pages)
 
-// Questions CRUD (Linked to Property)
-Route::resource('properties.questions', App\Http\Controllers\QuestionController::class)
-    ->shallow(); 
+// --- PROTECTED ADMIN SECTION (STABLE) ---
+Route::middleware(['auth'])->group(function () {
     
-// Answers CRUD (Linked to Question)
-Route::resource('questions.answers', App\Http\Controllers\AnswerController::class)
-    ->shallow(); 
+    // Dashboard is accessed via the stable /dashboard path and named 'admin.dashboard'
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard'); 
     
-// Optional Homepage (CHANGED to load a welcome view)
-Route::get('/', function () {
-    return view('welcome'); // Load the new welcome view
+    // Set the root of the protected section to the dashboard
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard'); 
 
+    // User Management
+    Route::resource('user-management', UserController::class)
+        ->names('admin.users')
+        ->only(['index', 'update']);
+
+    // Properties CRUD (Full Access)
+    Route::resource('properties', PropertyController::class);
+    Route::resource('guests', GuestController::class);
+    Route::resource('instruction-pages', InstructionPageController::class);
+    Route::resource('instruction-pages.steps', StepController::class)->shallow();
+    Route::resource('properties.questions', QuestionController::class)->shallow();
+    Route::resource('questions.answers', AnswerController::class)->shallow();
 });
+
+
+// --- FINAL HOMEPAGE FALLBACKS (Redirect Loop Prevention) ---
+
+// Final stable check for the root path ('/')
 Route::get('/', function () {
-    return redirect()->route('admin.dashboard');
-});
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    if (Auth::check()) {
+        return redirect('/dashboard'); 
+    }
+    return redirect()->route('login');
+})->name('home');

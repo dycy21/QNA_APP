@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Property;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PropertyController extends Controller
 {
@@ -34,6 +35,11 @@ class PropertyController extends Controller
                          ->with('success', 'Property created successfully.');
     }
 
-    // You can add edit/update/destroy methods here if needed, 
-    // but the basics above will get the system running.
+    // DESTROY (Delete) - Reverted: Any authenticated user can delete
+    public function destroy(Property $property)
+    {
+        $property->delete();
+        return redirect()->route('properties.index')
+                         ->with('success', 'Property deleted successfully.');
+    }
 }

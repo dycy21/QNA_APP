@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Property;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
-    // Show the question (and its answers) for a specific property
     public function show(Question $question)
     {
         $question->load('answers.instructionPage');
@@ -16,17 +16,16 @@ class QuestionController extends Controller
         return view('admin.questions.show', compact('question', 'property'));
     }
 
-    // Show form to create/edit the question for a property
+    // CREATE - Reverted: Any authenticated user can create
     public function create(Property $property)
     {
-        // Check if a question already exists for this property
         if ($property->question) {
             return redirect()->route('questions.show', $property->question);
         }
         return view('admin.questions.create', compact('property'));
     }
 
-    // Store the new question
+    // STORE - Reverted: Any authenticated user can store
     public function store(Request $request, Property $property)
     {
         $validated = $request->validate([
@@ -39,5 +38,10 @@ class QuestionController extends Controller
                          ->with('success', 'Question saved for ' . $property->name . '. Now add answers!');
     }
     
-   
+    // DESTROY (Delete) - Reverted: Any authenticated user can delete
+    public function destroy(Question $question)
+    {
+        $question->delete();
+        return back()->with('success', 'Question deleted successfully.');
+    }
 }
