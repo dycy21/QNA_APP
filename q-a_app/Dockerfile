@@ -3,6 +3,7 @@ FROM php:8.3-fpm-alpine
 
 # 2. Install necessary system packages, including Node.js and NPM
 #    and common extensions needed for Laravel/Composer
+ARG CACHE_BUST=20251107
 RUN apk add --no-cache \
     nginx \
     git \
@@ -40,7 +41,7 @@ RUN npm install \
 RUN chmod -R 777 storage bootstrap/cache
 
 # 8. Configure Nginx to serve the Laravel application from the public directory
-COPY .docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker-config/nginx.conf /etc/nginx/conf.d/default.conf
 
 # 9. Expose the port Nginx will listen on
 EXPOSE 8000
