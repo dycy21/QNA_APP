@@ -3,7 +3,7 @@ FROM php:8.3-fpm-alpine
 
 # 2. Install necessary system packages, including Node.js and NPM
 #    and common extensions needed for Laravel/Composer
-ARG CACHE_BUST=20251107
+
 RUN apk add --no-cache \
     nginx \
     git \
@@ -23,7 +23,7 @@ WORKDIR /app
 
 # 4. Copy composer files and install PHP dependencies (using Composer)
 #    This speeds up rebuilds since composer.json rarely changes
-COPY composer.json composer.lock ./
+COPY composer.json composer.lock 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer install --no-dev --optimize-autoloader
 
