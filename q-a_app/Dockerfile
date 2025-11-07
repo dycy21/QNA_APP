@@ -41,12 +41,12 @@ RUN npm install \
 RUN chmod -R 777 storage bootstrap/cache
 
 # 8. Configure Nginx to serve the Laravel application from the public directory
-COPY docker-config/nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # 9. Expose the port Nginx will listen on
 EXPOSE 8000
 
 # 10. Define the start command to run PHP-FPM and Nginx
-COPY docker-config/start.sh /usr/local/bin/start.sh
+COPY start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 CMD [start.sh]
