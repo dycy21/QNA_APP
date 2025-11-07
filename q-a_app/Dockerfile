@@ -47,4 +47,6 @@ COPY docker-config/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 8000
 
 # 10. Define the start command to run PHP-FPM and Nginx
-CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
+COPY docker-config/start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+CMD [start.sh]
