@@ -10,7 +10,7 @@ class InstructionPageController extends Controller
     public function index()
     {
         $pages = InstructionPage::latest()->get();
-        return view('instructions.pages.index', compact('pages'));
+        return view('instruction_index', compact('pages'));
     }
 
     public function create()
