@@ -15,7 +15,7 @@ class InstructionPageController extends Controller
 
     public function create()
     {
-        return view('instructions.pages.create');
+        return view('instruction_create');
     }
 
     public function store(Request $request)
@@ -35,7 +35,7 @@ class InstructionPageController extends Controller
     {
         // Eager load steps to display them
         $instructionPage->load('steps'); 
-        return view('instructions.pages.show', compact('instructionPage'));
+        return view('instruction_show', compact('instructionPage'));
     }
     
     // For simplicity, we omit edit/update/destroy, but they follow the standard pattern.
