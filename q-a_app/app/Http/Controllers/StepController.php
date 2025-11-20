@@ -14,7 +14,7 @@ class StepController extends Controller
     {
         // This method is called via /instruction-pages/{instruction_page}/steps/create
         $nextOrder = $instructionPage->steps()->max('order') + 1;
-        return view('instructions.steps.create', compact('instructionPage', 'nextOrder'));
+        return view('instruction_steps_create', compact('instructionPage', 'nextOrder'));
     }
 
     // Stores the newly created step.
