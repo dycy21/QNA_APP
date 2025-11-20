@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -11,7 +12,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::orderBy('name')->get(); 
+        
+        
+        $roles = ['admin', 'manager', 'basic']; 
+
+        return view('admin.users.index', compact('users', 'roles'));
     }
 
     /**

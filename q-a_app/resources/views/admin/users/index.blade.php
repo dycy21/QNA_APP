@@ -22,12 +22,13 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         
+                        {{-- Form handles the role update --}}
                         <form method="POST" action="{{ route('admin.users.update', $user) }}">
                             @csrf
                             @method('PUT')
                             
                             <td>
-                                <span style="text-transform: capitalize; font-weight: bold; color: {{ $user->role == 'admin' ? '#ffc107' : 'white' }};">
+                                <span style="text-transform: capitalize; font-weight: bold; color: {{ $user->role === 'admin' ? '#ffc107' : 'white' }};">
                                     {{ $user->role }}
                                 </span>
                             </td>
@@ -35,7 +36,7 @@
                             <td>
                                 <select name="role" required style="width: 150px; margin-right: 10px;">
                                     @foreach ($roles as $role)
-                                        <option value="{{ $role }}" {{ $user->role == $role ? 'selected' : '' }}>
+                                        <option value="{{ $role }}" {{ $user->role === $role ? 'selected' : '' }}>
                                             {{ ucfirst($role) }}
                                         </option>
                                     @endforeach
