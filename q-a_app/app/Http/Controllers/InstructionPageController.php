@@ -26,7 +26,7 @@ class InstructionPageController extends Controller
     public function create()
     {
         // Load the integrated editor immediately, setting the isNew flag
-        return view('instruction_edit', [
+        return view('instructions_create', [
             'instructionPage' => (object)['id' => null, 'title' => null, 'description' => null],
             'steps' => collect([]),
             'isNew' => true 
