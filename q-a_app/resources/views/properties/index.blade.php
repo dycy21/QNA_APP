@@ -7,7 +7,7 @@
         <h2>Property List</h2>
         
         <p><a href="{{ route('properties.create') }}" class="glossy-btn success">Add New Property</a></p>
-
+        <div class="responsive-table-wrapper">
         <table>
             <thead>
                 <tr>
@@ -20,20 +20,20 @@
             <tbody>
                 @forelse ($properties as $property)
                     <tr>
-                        {{-- 🛑 NAME IS NOW A LINK TO THE DETAIL PAGE 🛑 --}}
+                        
                         <td>
-                            <a href="{{ route('properties.show', $property) }}" style="color: yellow; font-weight: bold; text-decoration: none;">
+                            <a href="{{ route('properties.show', $property) }}" style="color: darkslategray; font-weight: bold; text-decoration: none;">
                                 {{ $property->name }}
                             </a>
                         </td>
                         
-                        <td>{{ $property->address ?? 'N/A' }}</td>
+                        <td style="color: darkslategray; font-weight: bold; text-decoration: none;">{{ $property->address ?? 'N/A' }}</td>
                         
                         <td>
                             @if ($property->question)
                                 <a href="{{ route('questions.show', $property->question) }}" class="glossy-btn success" style="padding: 5px 10px;">Manage Q&A</a>
                             @else
-                                <a href="{{ route('properties.questions.create', $property) }}" class="glossy-btn primary" style="padding: 5px 10px;">Add Question</a>
+                                <a href="{{ route('properties.questions.create', $property) }}" class="btn-primary glossy-btn primary" style="padding: 5px 10px;">Add Question</a>
                             @endif
                         </td>
 
@@ -52,6 +52,7 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
         
         <div style="margin-top: 20px; text-align: center;">
             {{ $properties->links('pagination::simple-bootstrap-4') }}

@@ -43,5 +43,7 @@
     </table>
 
     <hr>
-    <a href="{{ route('properties.index') }}"  class="glossy-btn success" style="background-color: #6c757d;">Back to Properties</a>
+
+
+    <a href="{{ route('properties.index') }}"  class="glossy-btn success" style="background-color: cadetblue; padding-top: 5px;">Back to Properties</a>
 @endsection

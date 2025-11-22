@@ -64,9 +64,8 @@
                         <p>{!! nl2br(e($step->content)) !!}</p>
                     </div>
 
-                    {{-- 2. Image (Left Side) --}}
-                    <div class="step-image">
-                        <img src="{{ $step->image_url }}" alt="Step {{ $step->order }} Visual">
+                    <div class="step-image" style="width: 40%;"> 
+                       <img src="{{ Storage::url($step->image_path) }}" alt="Step {{ $step->order }} Visual">
                     </div>
                 </div>
             @else

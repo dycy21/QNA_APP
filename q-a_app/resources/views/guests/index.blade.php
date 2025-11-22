@@ -30,7 +30,7 @@
                 @forelse ($guests as $guest)
                     <tr>
                         <td>
-                            <a href="{{ route('guests.show', $guest) }}" style="color: yellow; font-weight: bold; text-decoration: none;">
+                            <a href="{{ route('guests.show', $guest) }}" style="color: darkslategray; font-weight: bold; text-decoration: none;">
                                 {{ $guest->name }}
                             </a>
                             <br>
@@ -40,7 +40,7 @@
                         <td>{{ $guest->check_in_date->format('M j') }} - {{ $guest->check_out_date->format('M j') }}</td>
                         <td>
                             <input type="text" 
-                                   style="width: 250px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: white;"
+                                   style="width: 250px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: darkslategray;"
                                    value="{{ route('guest.checkin', $guest->magic_link_token) }}" 
                                    readonly
                                    onclick="this.select(); document.execCommand('copy'); alert('Link copied!');">
@@ -49,7 +49,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" style="text-align: center; color: yellow;">
+                        <td colspan="4" style="text-align: center; color: darkslategray;">
                             @if (isset($search) && $search)
                                 No guests found matching "{{ $search }}".
                             @else

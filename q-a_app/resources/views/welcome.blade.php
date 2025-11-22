@@ -16,7 +16,7 @@
                 This is a private administration area. Please proceed to the login (once authentication is added) or the setup pages if you have access.
             </p>
             
-            <a href="{{ route('properties.index') }}" class="btn btn-success btn-lg shadow">
+            <a href="{{ route('properties.index') }}" class="glossy-btn success">
                 Go to Admin Setup ⚙️
             </a>
         </div>

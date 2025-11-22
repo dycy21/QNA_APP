@@ -1,23 +1,20 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
 use App\Models\InstructionPage;
 use App\Models\Step;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage; // Needed for image handling
 
 class StepController extends Controller
 {
-    // Shows the form to create a new step for a specific instruction page.
-    public function create(InstructionPage $instructionPage)
-    {
-        // This method is called via /instruction-pages/{instruction_page}/steps/create
-        $nextOrder = $instructionPage->steps()->max('order') + 1;
-        return view('instruction_steps_create', compact('instructionPage', 'nextOrder'));
-    }
-
-    // Stores the newly created step.
+    // ... (create method is handled by redirect, show is handled by edit) ...
+    
+    /**
+     * Stores the newly created step.
+     * POST /instruction-pages/{instruction_page}/steps
+     */
     public function store(Request $request, InstructionPage $instructionPage)
     {
         $validated = $request->validate([
@@ -30,7 +27,6 @@ class StepController extends Controller
         $imagePath = null;
         if ($request->hasFile('image')) {
             // Store the file in 'storage/app/public/instructions'
-            // The storage:link command ensures this is web accessible via /storage/instructions/...
             $imagePath = $request->file('image')->store('instructions', 'public');
         }
 
@@ -40,10 +36,43 @@ class StepController extends Controller
             'order' => $validated['order'],
             'image_path' => $imagePath,
         ]);
-
-        return redirect()->route('instruction-pages.show', $instructionPage)
+        
+        // Redirect back to the integrated edit page
+        return redirect()->route('instruction-pages.edit', $instructionPage)
                          ->with('success', 'Step added successfully.');
     }
     
-    // For simplicity, we omit edit/update/destroy, but they follow the standard pattern.
+    /**
+     * Handles AJAX request to update the order of steps (Drag & Drop).
+     * POST /steps/reorder
+     */
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'order' => 'required|array',
+            'order.*' => 'exists:steps,id', 
+        ]);
+        
+        foreach ($request->order as $index => $stepId) {
+            Step::where('id', $stepId)->update(['order' => $index + 1]);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Steps reordered successfully.']);
+    }
+
+    /**
+     * Remove the specified step from storage.
+     * DELETE /steps/{step}
+     */
+    public function destroy(InstructionPage $instructionPage, Step $step)
+    {
+        if ($step->image_path) {
+            Storage::disk('public')->delete($step->image_path);
+        }
+        
+        $step->delete();
+        
+        return redirect()->route('instruction-pages.edit', $instructionPage)
+                         ->with('success', 'Step deleted successfully.');
+    }
 }

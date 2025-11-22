@@ -44,13 +44,11 @@ Route::get('/register', [RegisteredUserController::class, 'create'])->name('regi
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
 
-// --- PROTECTED ADMIN SECTION (STABLE) ---
+// --- PROTECTED ADMIN SECTION (FULL ACCESS FOR AUTHENTICATED USERS) ---
 Route::middleware(['auth'])->group(function () {
     
-    // Dashboard is accessed via the stable /dashboard path and named 'admin.dashboard'
+    // Dashboard and Homepage
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard'); 
-    
-    // Set the root of the protected section to the dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard'); 
 
     // User Management
@@ -58,17 +56,26 @@ Route::middleware(['auth'])->group(function () {
         ->names('admin.users')
         ->only(['index', 'update']);
 
-    // Properties CRUD (Full Access)
+    // Properties CRUD
     Route::resource('properties', PropertyController::class);
+
+    // Guests CRUD
     Route::resource('guests', GuestController::class);
+
+    // Instruction Pages CRUD
     Route::resource('instruction-pages', InstructionPageController::class);
+    
+    // Explicitly define the route for saving the step order
+    Route::post('steps/reorder', [StepController::class, 'reorder'])->name('steps.reorder'); 
+
+    // Nested Routes
     Route::resource('instruction-pages.steps', StepController::class)->shallow();
     Route::resource('properties.questions', QuestionController::class)->shallow();
     Route::resource('questions.answers', AnswerController::class)->shallow();
 });
 
 
-// --- FINAL HOMEPAGE FALLBACKS (Redirect Loop Prevention) ---
+// --- FINAL HOMEPAGE FALLBACKS (Stable Redirects) ---
 
 // Final stable check for the root path ('/')
 Route::get('/', function () {

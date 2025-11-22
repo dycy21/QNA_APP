@@ -16,7 +16,7 @@
                 <p><strong>Check-out:</strong> {{ $guest->check_out_date->format('M j, Y') }}</p>
                 <p><strong>Email:</strong> {{ $guest->email ?? 'N/A' }}</p>
                 <p><strong>Phone:</strong> {{ $guest->phone ?? 'N/A' }}</p>
-                <p><strong>Magic Link:</strong> <a href="{{ route('guest.checkin', $guest->magic_link_token) }}" style="color: #ffc107;">View Check-in Page</a></p>
+                <p><strong>Magic Link:</strong> <a href="{{ route('guest.checkin', $guest->magic_link_token) }}" style="color: lightseagreen;">View Check-in Page</a></p>
             </div>
             
             {{-- COLUMN 2: Status & Compliance --}}
@@ -24,18 +24,18 @@
                 <h3 style="border-bottom: 1px solid rgba(255, 255, 255, 0.5); padding-bottom: 5px;">Compliance & Status</h3>
                 
                 <p><strong>Info Updated:</strong> 
-                    <span style="color: {{ $guest->info_updated ? '#38c172' : '#ffc107' }}; font-weight: bold;">
+                    <span style="color: {{ $guest->info_updated ? 'green' : 'red' }}; font-weight: bold;">
                         {{ $guest->info_updated ? 'Yes' : 'Pending' }}
                     </span>
                 </p>
 
                 <p><strong>ID Photo Status:</strong>
                     @if ($guest->idPhoto)
-                        <span style="color: #38c172; font-weight: bold;">Uploaded!</span>
+                        <span style="color: #2b5da8ff; font-weight: bold;">Uploaded!</span>
                         <br>
                         <a href="{{ Storage::url($guest->idPhoto->file_path) }}" target="_blank" class="glossy-btn success" style="padding: 5px 10px; font-size: 0.8em; margin-top: 5px;">View ID Scan</a>
                     @else
-                        <span style="color: #ffc107; font-weight: bold;">Not Uploaded</span>
+                        <span style="color: green ; font-weight: bold;">Not Uploaded</span>
                     @endif
                 </p>
 

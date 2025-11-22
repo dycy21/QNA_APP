@@ -24,7 +24,7 @@
             <p><strong>Question:</strong> {{ $property->question->text }}</p>
             <a href="{{ route('questions.show', $property->question) }}" class="glossy-btn success" style="padding: 5px 10px;">Manage Q&A Logic</a>
         @else
-            <p><strong>Status:</strong> <span style="color: #ffc107; font-weight: bold;">Q&A Setup Pending</span></p>
+            <p><strong>Status:</strong> <span style="color: darkslategray; font-weight: bold;">Q&A Setup Pending</span></p>
             <a href="{{ route('properties.questions.create', $property) }}" class="glossy-btn primary" style="padding: 5px 10px;">Setup Check-in Question</a>
         @endif
 

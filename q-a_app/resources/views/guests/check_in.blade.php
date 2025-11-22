@@ -42,7 +42,7 @@
                     @endif
                 </div>
                 
-                <button type="submit" class="btn btn-primary">Update & Save Details</button>
+                <button type="submit" class="glossy-btn primary">Update & Save Details</button>
             </form>
         </div>
     </div>
@@ -88,7 +88,7 @@
                                 type="submit" 
                                 name="answer_id" 
                                 value="{{ $answer->id }}" 
-                                class="btn btn-outline-success me-2 mt-2">
+                                class="glossy-btn success">
                                 {{ $answer->text }}
                             </button>
                         @endforeach

@@ -29,7 +29,7 @@
             <input type="file" name="image" id="image" accept="image/*">
         </div>
         
-        <button type="submit" class="btn btn-success">Save Step</button>
-        <a href="{{ route('instruction-pages.show', $instructionPage) }}" class="btn" style="background-color: #6c757d;">Cancel</a>
+        <button type="submit" class="glossy-btn success">Save Step</button>
+        <a href="{{ route('instruction-pages.show', $instructionPage) }}" class="glossy-btn primary" style="background-color: #6c757d;">Cancel</a>
     </form>
 @endsection

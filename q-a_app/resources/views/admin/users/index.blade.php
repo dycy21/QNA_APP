@@ -28,7 +28,7 @@
                             @method('PUT')
                             
                             <td>
-                                <span style="text-transform: capitalize; font-weight: bold; color: {{ $user->role === 'admin' ? '#ffc107' : 'white' }};">
+                                <span style="text-transform: capitalize; font-weight: bold; color: {{ $user->role === 'admin' ? 'darkslategray' : 'white' }};">
                                     {{ $user->role }}
                                 </span>
                             </td>
