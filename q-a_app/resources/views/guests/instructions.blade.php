@@ -65,7 +65,7 @@
                     </div>
 
                     <div class="step-image" style="width: 40%;"> 
-                       <img src="{{ Storage::url($step->image_path) }}" alt="Step {{ $step->order }} Visual">
+                       <img src="{{ asset('uploads/' . $step->image_path) }}" alt="Step {{ $step->order }} Visual">
                     </div>
                 </div>
             @else
