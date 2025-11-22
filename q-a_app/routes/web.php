@@ -64,7 +64,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Instruction Pages CRUD
     Route::resource('instruction-pages', InstructionPageController::class);
-    
+    Route::delete('instruction-pages/{instruction_page}/steps/{step}', [StepController::class, 'destroy'])
+    ->name('instruction-pages.steps.destroy');
+    Route::post('instruction-pages/{instruction_page}/steps', [StepController::class, 'store'])
+    ->name('instruction-pages.steps.store');
     // Explicitly define the route for saving the step order
     Route::post('steps/reorder', [StepController::class, 'reorder'])->name('steps.reorder'); 
 
