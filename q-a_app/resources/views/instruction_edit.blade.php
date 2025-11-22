@@ -23,7 +23,7 @@
                 <textarea name="description" id="description">{{ old('description', $instructionPage->description ?? '') }}</textarea>
             </div>
             <div style="display: flex; gap: 10px; align-items: center; margin-top: 2px; margin-bottom: 2px;">
-            <button class="glossy-btn success">
+            <button type="submit" class="glossy-btn success">
                 {{-- Button text reflects the creation/saving action --}}
                 {{ $isNew ? 'Create Page' : 'Save Details' }}
             </button>

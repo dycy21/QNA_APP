@@ -63,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('guests', GuestController::class);
 
     // Instruction Pages CRUD
+    
     Route::resource('instruction-pages', InstructionPageController::class);
     Route::delete('instruction-pages/{instruction_page}/steps/{step}', [StepController::class, 'destroy'])
     ->name('instruction-pages.steps.destroy');
