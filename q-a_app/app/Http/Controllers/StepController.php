@@ -27,7 +27,7 @@ class StepController extends Controller
         $imagePath = null;
         if ($request->hasFile('image')) {
             // Store the file in 'storage/app/public/instructions'
-            $imagePath = $request->file('image')->store('instructions', 'volume');
+            $imagePath = $request->file('image')->store('instructions', 'railway_volume');
         }
 
         $instructionPage->steps()->create([

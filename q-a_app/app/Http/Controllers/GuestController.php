@@ -107,7 +107,7 @@ class GuestController extends Controller
         ]);
 
         if ($request->hasFile('id_photo')) {
-            $path = $request->file('id_photo')->store('ids', 'volume');
+            $path = $request->file('id_photo')->store('ids', 'railway_volume');
             $guest->idPhoto()->create(['file_path' => $path]);
         }
 
