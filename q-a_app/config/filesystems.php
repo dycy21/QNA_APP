@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'local'),
+    'default' => env('FILESYSTEM_DISK', 'railway_volume'),
 
     /*
     |--------------------------------------------------------------------------
@@ -57,6 +57,16 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
             'report' => false,
+        ],
+
+            'railway_volume' => [
+            'driver' => 'local',
+            'root' => base_path('storage/volume'), 
+            'url' => env('APP_URL') . '/volume', 
+        
+            'visibility' => 'public',
+            'throw' => true,
+
         ],
 
     ],
