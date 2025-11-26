@@ -27,7 +27,7 @@ class StepController extends Controller
         $imagePath = null;
         if ($request->hasFile('image')) {
             // Store the file in 'storage/app/public/instructions'
-            $imagePath = $request->file('image')->store('instructions', 'public');
+            $imagePath = $request->file('image')->store('instructions', 'volume');
         }
 
         $instructionPage->steps()->create([
@@ -67,7 +67,7 @@ class StepController extends Controller
     public function destroy(InstructionPage $instructionPage, Step $step)
     {
         if ($step->image_path) {
-            Storage::disk('public')->delete($step->image_path);
+            Storage::disk('railway_volume')->delete($step->image_path);
         }
         
         $step->delete();
